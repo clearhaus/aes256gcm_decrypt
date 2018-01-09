@@ -19,6 +19,8 @@ key = Base64.decode64(File.read('test/key_base64.txt'))
 puts Aes256GcmDecrypt::decrypt(ciphertext_and_tag, key)
 ```
 
+`#decrypt` returns a string with plaintext if authenticated decryption is successful. If the authentication part is unsuccessful, it returns `false`. If anything is wrong, e.g. the length of `key` is not 32, it returns `nil`.
+
 ## Inspirational sources
 
 * [Your first Ruby native extension: C](https://blog.jcoglan.com/2012/07/29/your-first-ruby-native-extension-c/)
