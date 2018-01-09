@@ -63,11 +63,6 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
     goto cleanup3;
   }
 
-  /* Provide empty string as additional authenticated data (AAD) */
-  if (!EVP_DecryptUpdate(ctx, NULL, &len, (unsigned char *)"", 0)) {
-    goto cleanup3;
-  }
-
   /* Provide message to be decrypted */
   if (!EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len)) {
     goto cleanup3;
