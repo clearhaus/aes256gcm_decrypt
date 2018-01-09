@@ -16,7 +16,7 @@ irb -r base64 -r ./lib/aes256gcm_decrypt.so
 token_data = Base64.decode64(File.read('test/token_data_base64.txt'))
 ciphertext = token_data[0..-17]
 tag = token_data[-16..-1]
-key = File.read('test/key_hex.txt').scan(/../).map(&:hex).pack('c*')
+key = [File.read('test/key_hex.txt')].pack('H*')
 
 puts Aes256GcmDecrypt::decrypt(ciphertext, tag, key)
 ```
