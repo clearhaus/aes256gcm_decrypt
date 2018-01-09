@@ -21,26 +21,6 @@ key = Base64.decode64(File.read('test/key_base64.txt'))
 puts Aes256GcmDecrypt::decrypt(ciphertext, tag, key)
 ```
 
-## Caveat
-
-The library does not work yet. A linking problem exists somewhere:
-
-```
-$ irb -r ./lib/aes256gcm_decrypt.so 
-/usr/lib/ruby/2.3.0/rubygems/core_ext/kernel_require.rb:55:in `require':LoadError: /path/to/aes256gcm_decrypt/lib/aes256gcm_decrypt.so: undefined symbol: EVP_DecryptFinal_ex - /path/to/aes256gcm_decrypt/lib/aes256gcm_decrypt.so
-```
-
-The C implementation, however, appears to be solid:
-
-```
-$ cd c-test
-$ make
-gcc test.c -o test -lcrypto -Wall
-$ ./test 
-Decrypted plaintext:
-{"applicationPrimaryAccountNumber":"4109370251004320","applicationExpirationDate":"200731","currencyCode":"840","transactionAmount":100,"deviceManufacturerIdentifier":"040010030273","paymentDataType":"3DSecure","paymentData":{"onlinePaymentCryptogram":"Af9x/QwAA/DjmU65oyc1MAABAAA=","eciIndicator":"5"}}
-```
-
 ## Inspirational sources
 
 * [Your first Ruby native extension: C](https://blog.jcoglan.com/2012/07/29/your-first-ruby-native-extension-c/)
