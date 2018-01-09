@@ -80,7 +80,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   }
 
   /* Finalise decryption */
-  if (EVP_DecryptFinal_ex(ctx, plaintext + len, &len) > 0) {
+  if (EVP_DecryptFinal_ex(ctx, &plaintext[len], &len) > 0) {
     plaintext_len += len;
     if (plaintext_len > ciphertext_len + 16) {
       fprintf(stderr, "Plaintext overflow in AES256GCM decryption! Aborting.\n");
