@@ -2,7 +2,7 @@
 
 Decrypt AES256GCM-encrypted data in Apple Pay Payment Tokens.
 
-This library is necessary for Ruby < 2.4, as the OpenSSL bindings do not support setting the length of the initialisation vector (IV). Setting the IV length is necessary for decrypting Apple Pay data.
+This library is necessary for Ruby < 2.4 (if you use the stdlib openssl rather than the [openssl gem](https://rubygems.org/gems/openssl)), as the OpenSSL bindings do not support setting the length of the initialisation vector (IV). Setting the IV length is necessary for decrypting Apple Pay data.
 
 The library becomes obsolete when we start using Ruby >= 2.4.
 
