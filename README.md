@@ -2,7 +2,7 @@
 
 Decrypt AES256GCM-encrypted data in Apple Pay Payment Tokens.
 
-This library is necessary for Ruby < 2.4, as the OpenSSL bindings do not support setting the length of the initialisation vector (IV). Setting the IV length is necessary for decrypting Apple Pay data.
+This library is necessary for Ruby < 2.4 (if you use the stdlib openssl rather than the [openssl gem](https://rubygems.org/gems/openssl)), as the OpenSSL bindings do not support setting the length of the initialisation vector (IV). Setting the IV length is necessary for decrypting Apple Pay data.
 
 The library becomes obsolete when we start using Ruby >= 2.4.
 
@@ -13,13 +13,13 @@ rake compile
 
 irb -r base64 -r ./lib/aes256gcm_decrypt.so
 
-token_data = Base64.decode64(File.read('test/token_data_base64.txt'))
-ciphertext = token_data[0..-17]
-tag = token_data[-16..-1]
+ciphertext_and_tag = Base64.decode64(File.read('test/token_data_base64.txt'))
 key = [File.read('test/key_hex.txt')].pack('H*')
 
-puts Aes256GcmDecrypt::decrypt(ciphertext, tag, key)
+puts Aes256GcmDecrypt::decrypt(ciphertext_and_tag, key)
 ```
+
+`#decrypt` returns a string with plaintext if authenticated decryption is successful. If the authentication part is unsuccessful, it returns `false`. If anything is wrong, e.g. the length of `key` is not 32, it returns `nil`.
 
 ## Inspirational sources
 
