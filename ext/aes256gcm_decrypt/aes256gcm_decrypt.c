@@ -5,42 +5,47 @@
 #include <openssl/evp.h>
 
 VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, VALUE rb_key) {
+
+  /* Declare variables */
+  VALUE result;
+  unsigned int tag_len, ciphertext_and_tag_len, ciphertext_len, key_len, iv_len;
+  int plaintext_len, len;
+  unsigned char *ciphertext, *tag, *key, *plaintext;
+  char *rb_ciphertext_p;
+  unsigned char iv[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  EVP_CIPHER_CTX *ctx;
+
+  /* Check parameter types */
   Check_Type(rb_ciphertext_and_tag, T_STRING);
   Check_Type(rb_key, T_STRING);
 
   /* Prepare variables */
-  VALUE result = Qnil;
+  result = Qnil;
+  tag_len = 16;
+  iv_len = 16;
 
-  unsigned int tag_len = 16;
-  unsigned int ciphertext_and_tag_len = RSTRING_LEN(rb_ciphertext_and_tag);
+  ciphertext_and_tag_len = RSTRING_LEN(rb_ciphertext_and_tag);
   if (ciphertext_and_tag_len <= tag_len) {
     goto exit;
   }
 
-  unsigned int ciphertext_len = ciphertext_and_tag_len - tag_len;
-
-  unsigned char *ciphertext = calloc(ciphertext_len, sizeof(unsigned char));
-  char *rb_ciphertext_p = StringValuePtr(rb_ciphertext_and_tag);
+  ciphertext_len = ciphertext_and_tag_len - tag_len;
+  ciphertext = calloc(ciphertext_len, sizeof(unsigned char));
+  rb_ciphertext_p = StringValuePtr(rb_ciphertext_and_tag);
   memcpy(ciphertext, rb_ciphertext_p, ciphertext_len);
 
-  unsigned char *tag = calloc(tag_len, sizeof(unsigned char));
+  tag = calloc(tag_len, sizeof(unsigned char));
   memcpy(tag, &rb_ciphertext_p[ciphertext_len], tag_len);
 
-  unsigned int key_len = RSTRING_LEN(rb_key);
+  key_len = RSTRING_LEN(rb_key);
   if (key_len != 32) {
     goto cleanup1;
   }
 
-  unsigned char *key = calloc(key_len, sizeof(unsigned char));
+  key = calloc(key_len, sizeof(unsigned char));
   memcpy(key, StringValuePtr(rb_key), key_len);
 
-  unsigned int iv_len = 16;
-  unsigned char iv[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-  int plaintext_len, len;
-  unsigned char *plaintext = calloc(ciphertext_len + 16, sizeof(unsigned char));
-
-  EVP_CIPHER_CTX *ctx;
+  plaintext = calloc(ciphertext_len + 16, sizeof(unsigned char));
 
   /* Create and initialise context */
   if (!(ctx = EVP_CIPHER_CTX_new())) {
@@ -76,7 +81,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   /* Finalise decryption */
   if (EVP_DecryptFinal_ex(ctx, &plaintext[len], &len) > 0) {
     plaintext_len += len;
-    if (plaintext_len > ciphertext_len + 16) {
+    if ((unsigned int)plaintext_len > ciphertext_len + 16) {
       fprintf(stderr, "Plaintext overflow in AES256GCM decryption! Aborting.\n");
       abort();
     }
