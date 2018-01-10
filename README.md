@@ -12,7 +12,7 @@ The library becomes obsolete when we start using Ruby >= 2.4.
 bundle install
 bundle exec rake test
 
-irb -r base64 -r ./lib/aes256gcm_decrypt.so
+irb -r base64 -I lib -r aes256gcm_decrypt
 
 ciphertext_and_tag = Base64.decode64(File.read('spec/token_data_base64.txt'))
 key = [File.read('spec/key_hex.txt').strip].pack('H*')
