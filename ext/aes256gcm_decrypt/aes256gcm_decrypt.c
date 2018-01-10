@@ -24,8 +24,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   memcpy(ciphertext, rb_ciphertext_p, ciphertext_len);
 
   unsigned char *tag = calloc(tag_len, sizeof(unsigned char));
-  char *rb_tag_p = rb_ciphertext_p + sizeof(unsigned char) * ciphertext_len;
-  memcpy(tag, rb_tag_p, tag_len);
+  memcpy(tag, &rb_ciphertext_p[ciphertext_len], tag_len);
 
   unsigned int key_len = RSTRING_LEN(rb_key);
   if (key_len != 32) {
