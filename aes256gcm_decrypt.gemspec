@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.extensions << "ext/aes256gcm_decrypt/extconf.rb"
 
   s.add_development_dependency "rake-compiler"
+  s.add_development_dependency "rspec"
 end

@@ -13,8 +13,8 @@ rake compile
 
 irb -r base64 -r ./lib/aes256gcm_decrypt.so
 
-ciphertext_and_tag = Base64.decode64(File.read('test/token_data_base64.txt'))
-key = [File.read('test/key_hex.txt').strip].pack('H*')
+ciphertext_and_tag = Base64.decode64(File.read('spec/token_data_base64.txt'))
+key = [File.read('spec/key_hex.txt').strip].pack('H*')
 
 puts Aes256GcmDecrypt::decrypt(ciphertext_and_tag, key)
 ```
