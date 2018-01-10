@@ -9,7 +9,8 @@ The library becomes obsolete when we start using Ruby >= 2.4.
 ## Usage
 
 ```
-rake compile
+bundle install
+bundle exec rake test
 
 irb -r base64 -r ./lib/aes256gcm_decrypt.so
 
