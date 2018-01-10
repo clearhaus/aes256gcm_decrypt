@@ -4,4 +4,5 @@ machine:
     version: 2.3.3
 
 test:
-  bundle exec rake test
+  override:
+    - bundle exec rake test
