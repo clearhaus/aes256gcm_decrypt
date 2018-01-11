@@ -17,10 +17,18 @@ irb -r base64 -I lib -r aes256gcm_decrypt
 ciphertext_and_tag = Base64.decode64(File.read('spec/token_data_base64.txt'))
 key = [File.read('spec/key_hex.txt').strip].pack('H*')
 
-puts Aes256GcmDecrypt::decrypt(ciphertext_and_tag, key)
+begin
+  puts Aes256GcmDecrypt::decrypt(ciphertext_and_tag, key)
+rescue Aes256GcmDecrypt::AuthenticationError => e
+  # somebody is up to something
+rescue Aes256GcmDecrypt::Error => e
+  # super class for the possible errors; Aes256GcmDecrypt::InputError and
+  # Aes256GcmDecrypt::OpenSSLError are left, i.e. either you supplied invalid
+  # input or we got an unexpected error from OpenSSL
+end
 ```
 
-`#decrypt` returns a string with plaintext if authenticated decryption is successful. If the authentication part is unsuccessful, it returns `false`. If anything is wrong, e.g. the length of `key` is not 32, it returns `nil`.
+See also [the specs](spec/decrypt_spec.rb).
 
 ## Inspirational sources
 
