@@ -8,7 +8,8 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
 
   /* Declare variables */
   VALUE result;
-  unsigned int tag_len, ciphertext_and_tag_len, ciphertext_len, key_len, iv_len;
+  unsigned int ciphertext_and_tag_len, ciphertext_len, tag_len;
+  unsigned int block_len, key_len, iv_len;
   int plaintext_len, len;
   unsigned char *ciphertext, *tag, *key, *plaintext;
   char *rb_ciphertext_p;
@@ -22,6 +23,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   /* Prepare variables */
   result = Qnil;
   tag_len = 16;
+  block_len = 16;
   iv_len = 16;
 
   ciphertext_and_tag_len = RSTRING_LEN(rb_ciphertext_and_tag);
@@ -45,7 +47,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   key = calloc(key_len, sizeof(unsigned char));
   memcpy(key, StringValuePtr(rb_key), key_len);
 
-  plaintext = calloc(ciphertext_len + 16, sizeof(unsigned char));
+  plaintext = calloc(ciphertext_len + block_len, sizeof(unsigned char));
 
   /* Create and initialise context */
   if (!(ctx = EVP_CIPHER_CTX_new())) {
@@ -81,7 +83,7 @@ VALUE method_aes256gcm_decrypt_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, 
   /* Finalise decryption */
   if (EVP_DecryptFinal_ex(ctx, &plaintext[len], &len) > 0) {
     plaintext_len += len;
-    if ((unsigned int)plaintext_len > ciphertext_len + 16) {
+    if ((unsigned int)plaintext_len > ciphertext_len + block_len) {
       fprintf(stderr, "Plaintext overflow in AES256GCM decryption! Aborting.\n");
       abort();
     }
