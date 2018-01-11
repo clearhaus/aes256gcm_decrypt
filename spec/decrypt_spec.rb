@@ -1,6 +1,5 @@
 require 'aes256gcm_decrypt'
 require 'base64'
-require 'digest'
 
 describe 'Aes256GcmDecrypt::decrypt' do
   before(:each) do
@@ -10,8 +9,12 @@ describe 'Aes256GcmDecrypt::decrypt' do
 
   it 'decrypts correctly' do
     plaintext = Aes256GcmDecrypt::decrypt(@ciphertext_and_tag, @key)
-    digest = Digest::SHA256.base64digest(plaintext)
-    expect(digest).to eq '6Nltyg0FgJxJ8wt6D6XDZ0y4iRD53kLoQcTBQ0FEvyY='
+    expect(plaintext).to eq \
+      '{"applicationPrimaryAccountNumber":"4109370251004320","applicationExp' +
+      'irationDate":"200731","currencyCode":"840","transactionAmount":100,"d' +
+      'eviceManufacturerIdentifier":"040010030273","paymentDataType":"3DSecu' +
+      're","paymentData":{"onlinePaymentCryptogram":"Af9x/QwAA/DjmU65oyc1MAA' +
+      'BAAA=","eciIndicator":"5"}}'
   end
 
   it 'detects wrong parameter types' do
