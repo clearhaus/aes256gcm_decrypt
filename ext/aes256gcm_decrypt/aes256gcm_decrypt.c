@@ -16,8 +16,9 @@ VALUE aes256gcm_decrypt(VALUE self, VALUE rb_ciphertext_and_tag, VALUE rb_key) {
   unsigned int block_len, key_len, iv_len;
   int plaintext_len, len;
   unsigned char *ciphertext, *tag, *key, *plaintext;
-  char *rb_ciphertext_p, *openssl_error_message;
+  char *rb_ciphertext_p;
   unsigned char iv[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  const char *openssl_error_message = "";
   EVP_CIPHER_CTX *ctx;
 
   /* Check parameters */
