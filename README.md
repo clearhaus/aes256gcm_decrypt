@@ -36,3 +36,5 @@ See also [the specs](spec/decrypt_spec.rb).
 * [Step-by-Step Guide to Building Your First Ruby Gem](https://quickleft.com/blog/engineering-lunch-series-step-by-step-guide-to-building-your-first-ruby-gem/)
 * [OpenSSL EVP Authenticated Decryption using GCM](https://wiki.openssl.org/index.php/EVP_Authenticated_Encryption_and_Decryption#Authenticated_Decryption_using_GCM_mode)
 * [The Ruby C API](http://silverhammermba.github.io/emberb/c/)
+* [Apple Pay Payment Token Format Reference](https://developer.apple.com/library/content/documentation/PassKit/Reference/PaymentTokenJSON/PaymentTokenJSON.html)
+* [Spreedly's gala gem](https://github.com/spreedly/gala)
