@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mkmf'
 extension_name = 'aes256gcm_decrypt'
 dir_config(extension_name)
