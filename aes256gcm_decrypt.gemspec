@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name     = 'aes256gcm_decrypt'
-  s.version  = '0.0.2'
+  s.version  = '1.0.0'
   s.summary  = 'Decrypt AES256GCM-encrypted data in Apple Pay Payment Tokens'
   s.author   = 'Clearhaus'
   s.homepage = 'https://github.com/clearhaus/aes256gcm_decrypt'
