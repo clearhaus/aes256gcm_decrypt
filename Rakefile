@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake/extensiontask'
 require 'rspec/core/rake_task'
 
@@ -10,4 +12,4 @@ RSpec::Core::RakeTask.new(:spec) do |task|
 end
 
 desc 'Compile extension and run specs'
-task :test => [:compile, :spec]
+task test: %i[compile spec]

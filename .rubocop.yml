@@ -1,0 +1,14 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'aes256gcm_decrypt.gemspec'
+    - 'ext/aes256gcm_decrypt/extconf.rb'
+    - 'tmp/**/aes256gcm_decrypt.gemspec'
+    - 'tmp/**/extconf.rb'
+
+Metrics/BlockLength:
+  Max: 48
+
+Metrics/LineLength:
+  Max: 86
