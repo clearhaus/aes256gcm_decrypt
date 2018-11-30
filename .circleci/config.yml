@@ -1,0 +1,21 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.3-stretch
+    steps:
+      - checkout
+      - run:
+          name: Install gems
+          command: bundle install --path vendor/bundle
+      - run:
+          name: Execute tests
+          command: bundle exec rake test
+
+workflows:
+  version: 2
+
+  test_aes256gcm_decrypt:
+    jobs:
+      - test
